@@ -35,46 +35,57 @@ public class Sorts {//implements Comparable<Integer> {
         return num;
     }
     
-    public static void merge(Integer num[], int iz, int me, int de){
+public static void merge(Integer num[], int iz, int me, int de){
         int t1 = me - iz + 1;
         int t2 = de - me;
-        Integer L[] = new Integer[t1];
-        Integer R[] = new Integer[t2];
-        int i = 0;
-        int j = 0;
-        for(i = 0; i < t1; i++){
-            L[i] = num[iz+i];
+        Integer L[] = new Integer [t1];
+        Integer R[] = new Integer [t2];
+
+        for (int i=0; i<t1; ++i)
+            L[i] = num[iz + i];
+        for (int j=0; j<t2; ++j)
+            R[j] = num[me + 1+ j];
+
+        int i = 0, j = 0;
+ 
+        int k = iz;
+        while (i < t1 && j < t2)
+        {
+            if (L[i].compareTo(R[j])<=0)
+            {
+                num[k] = L[i];
+                i++;
+            }
+            else
+            {
+                num[k] = R[j];
+                j++;
+            }
+            k++;
         }
-        for(j = 0; j < t2; j++){
-            R[j] = num[me+1+j];
+ 
+        while (i < t1)
+        {
+            num[k] = L[i];
+            i++;
+            k++;
         }
-        i = 0;
-        j = 0;
-        int h = 1;
-        while((i < t1)&&(j<t2)){
-           if(L[i].compareTo(R[j])<=0){
-               num[h] = L[i];
-               i = i + 1;
-           }else
-           {
-               num[h] = R[j];
-               j = j +1;
-           }
-           h = h + 1;
+ 
+        while (j < t2)
+        {
+            num[k] = R[j];
+            j++;
+            k++;
         }
-        
-        while (i < t1){
-            num[h] = L[i];
-            i = i + 1;
-            h = h + 1;
+    }
+    
+    public static void mergeSort(Integer[] num, int iz, int de){
+        if (iz < de){
+            int m = (iz+de)/2;
+            mergeSort(num, iz, m);
+            mergeSort(num, m+1, de);
+            merge(num, iz, m, de);
         }
-        
-        while (j < t2){
-            num[h] = R[j];
-            j = j + 1;
-            h = h +1;
-        }
-        
     }
  
     public int partition(Integer arr[], int left, int right)
@@ -109,10 +120,6 @@ public class Sorts {//implements Comparable<Integer> {
               quickSort(arr, index, right);
   }
     
-    public static void mergeSort(Integer[] num, int iz, int de)
-    {
-        //if ()
-    }
     public static void main(String[] args){
         
         Integer arr[] = {34,2,10,10,-9};
